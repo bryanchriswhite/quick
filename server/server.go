@@ -23,12 +23,14 @@ type Server struct {
 	// and the host as the "address".
 	listenURL *url.URL
 
-	// listener is assigned in #Start() and its presence (or absence) is used to
-	// determine whether the server is closed or not.
+	// listener is the connection listener assigned in #Start().
 	listener net.Listener
 
 	// counter is what is incremented by the server when it handles an increment request.
 	counter atomic.Uint64
+
+	// isClosed is used to determine if the server is closed or not.
+	isClosed atomic.Bool
 }
 
 // connectionHandlerFn is a function which handles a connection's I/O.
@@ -67,20 +69,20 @@ func (s *Server) Start(ctx context.Context) (err error) {
 	return nil
 }
 
-// IsClosed returns true if a listener is assigned to s#listener, which should be
-// reset to nil in #Close().
+// IsClosed returns true if the server is closed.
 func (s *Server) IsClosed() bool {
-	return s.listener == nil
+	return s.isClosed.Load()
 }
 
-// Close closes the underlying listener and resets s#listener to nil.
+// Close closes the underlying listener updates #isClosed.
 func (s *Server) Close() error {
-	err := s.listener.Close()
+	if err := s.listener.Close(); err != nil {
+		return err
+	}
 
-	// Reset s.listener to nil.
-	s.listener = nil
-
-	return err
+	// Set isClosed to true if the listener was closed successfully.
+	s.isClosed.CompareAndSwap(false, true)
+	return nil
 }
 
 // goCloseOnCtxDone closes the server when the context is cancelled.
@@ -124,15 +126,12 @@ func (s *Server) goHandleConnection(conn net.Conn, handler connectionHandlerFn) 
 
 		// TODO_IMPROVE: ideally, handler() would block until data is received instead
 		// of returning an EOF error. We seem to get EOF errors regardless of whether
-		// the connection is used directly or wrapped in bufio
+		// the connection is used directly or wrapped in bufio.
 		if err := handler(readWriter); err != nil && !errors.Is(err, io.EOF) {
 			// TODO_IMPROVE: replace `log` usage with
 			// `github.com/pokt-network/poktroll/pkg/polylog`
 			// structured logger.
 			log.Printf("failed to handle request: %v", err)
-			// TODO: remove the else case...
-			//} else {
-			//	fmt.Printf("xxx EOF error while handling")
 		}
 	}
 }
