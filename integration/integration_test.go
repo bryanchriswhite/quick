@@ -13,8 +13,6 @@ import (
 	"github.com/bryanchriswhite/quick/server"
 )
 
-const testServerURL = "tcp://localhost:8080"
-
 func TestSingleClient(t *testing.T) {
 	ctx := context.Background()
 

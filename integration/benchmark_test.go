@@ -13,8 +13,6 @@ import (
 	"github.com/bryanchriswhite/quick/server"
 )
 
-const testServerURL = "tcp://localhost:8080"
-
 func BenchmarkClient_Increment(b *testing.B) {
 	ctx := context.Background()
 
