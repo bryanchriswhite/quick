@@ -1,7 +1,7 @@
 # Quick
 
 Quick is a simple client/server implementation which allows the client to increment
- a `uint64` counter on the server and get the updated count in return.
+a `uint64` counter on the server and get the updated count in return.
 
 ## Dependencies
 
@@ -53,6 +53,34 @@ make load-tests
 ```bash
 make benchmarks
 ```
+
+#### Results
+
+|          | ns/op        | ops/min      |
+|----------|--------------|--------------|
+|          | 5.70E+04     | 1.05E+06     |
+|          | 6.07E+04     | 9.88E+05     |
+|          | 5.81E+04     | 1.03E+06     |
+|          | 6.23E+04     | 9.63E+05     |
+|          | 6.10E+04     | 9.83E+05     |
+|          | 6.27E+04     | 9.57E+05     |
+|          | 6.07E+04     | 9.88E+05     |
+|          | 6.12E+04     | 9.80E+05     |
+|          | 6.04E+04     | 9.94E+05     |
+|          | 5.76E+04     | 1.04E+06     |
+| ---      | ---          | ---          |
+| **Avg.** | **6.02E+04** | **9.98E+05** |
+
+````
+goos: linux
+goarch: amd64
+pkg: github.com/bryanchriswhite/quick/integration
+cpu: AMD Ryzen Threadripper 1920X 12-Core Processor 
+BenchmarkClient_Increment-24               18451             57585 ns/op            8416 B/op          8 allocs/op
+PASS
+ok      github.com/bryanchriswhite/quick/integration    3.158s
+
+````
 
 ## Future Work
 
