@@ -1,0 +1,16 @@
+.PHONY: all-tests unit-tests integration-tests load-tests benchmarks
+
+all-tests:
+	go test -race -tags=integration,load,benchmark -bench=. -benchmem ./...
+
+unit-tests:
+	go test -race ./...
+
+integration-tests:
+	go test -race -tags=integration ./integration/...
+
+load-tests:
+	go test -race -tags=load ./integration/...
+
+benchmarks:
+	go test -race -tags=benchmark -bench=. -benchmem ./integration/...

@@ -6,6 +6,7 @@ Quick is a simple client/server implementation which allows the client to increm
 ## Dependencies
 
 - [Go](https://golang.org/dl/)
+- [make](https://www.gnu.org/software/make/) _(optional)_
 
 ## Setup Development Environment
 
@@ -26,38 +27,37 @@ go mod download
 ### All Tests
 
 ```bash
-go test -race -tags integration,load,benchmark -bench=. -benchmem ./...
+make all-tests
 ```
 
 ### Unit Tests
 
 ```bash
-go test -race ./...
+make unit-tests
 ```
 
 ### Integration Tests
 
 ```bash
-go test -race -tags integration ./integration/...
+make integration-tests
 ```
 
 ### Load Tests
 
 ```bash
-go test -race -tags load ./integration/...
+make load-tests
 ```
 
 ### Benchmarks
 
 ```bash
-go test -race -tags benchmark -bench=. -benchmem ./integration/...
+make benchmarks
 ```
 
 ## Future Work
 
 - [ ] add client CLI
 - [ ] add server CLI
-- [ ] add build tooling
 - [ ] containerize everything (i.e. building CLI's, running tests, etc.)
 - [ ] add support for HTTP transport & JSON serialization
 - [ ] add support for gRPC transport & Protobuf serialization
