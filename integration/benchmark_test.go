@@ -1,3 +1,5 @@
+//go:build benchmark
+
 package integration
 
 import (
@@ -10,6 +12,8 @@ import (
 	"github.com/bryanchriswhite/quick/client"
 	"github.com/bryanchriswhite/quick/server"
 )
+
+const testServerURL = "tcp://localhost:8080"
 
 func BenchmarkClient_Increment(b *testing.B) {
 	ctx := context.Background()
