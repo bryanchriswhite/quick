@@ -9,7 +9,7 @@ import (
 	"github.com/bryanchriswhite/quick"
 )
 
-var _ quick.ClientI = (*Client)(nil)
+var _ quick.IncrementClient = (*Client)(nil)
 
 type Client struct {
 	conn net.Conn

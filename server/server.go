@@ -16,7 +16,7 @@ import (
 	"github.com/bryanchriswhite/quick"
 )
 
-var _ quick.ServerI = (*Server)(nil)
+var _ quick.IncrementServer = (*Server)(nil)
 
 type Server struct {
 	// listenURL is used to start a net.Listener using the scheme as the "network"
